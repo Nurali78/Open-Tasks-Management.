@@ -1,0 +1,289 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tasks Management System - Styled</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+  />
+  <style>
+    /* Custom scrollbar for table */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-r from-blue-100 via-blue-50 to-blue-200 min-h-screen flex items-center justify-center p-6 font-sans">
+  <main class="bg-white rounded-2xl shadow-2xl w-full max-w-7xl p-10 md:p-14">
+    <h1 class="text-blue-800 text-3xl font-extrabold mb-10 text-center">
+      Tasks Management System
+    </h1>
+
+    <form id="taskForm" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-10 gap-y-8 max-w-full" autocomplete="off" novalidate>
+      <div class="flex flex-col">
+        <label for="taskName" class="text-blue-700 text-sm font-semibold mb-2">Task Name <span class="text-red-600">*</span></label>
+        <input id="taskName" name="taskName" type="text" class="border border-blue-300 rounded-lg px-4 py-3 text-sm placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="" required />
+      </div>
+
+      <div class="flex flex-col">
+        <label for="remarks" class="text-blue-700 text-sm font-semibold mb-2">Remarks</label>
+        <textarea id="remarks" name="remarks" rows="1" class="border border-blue-300 rounded-lg px-4 py-3 text-sm placeholder-blue-400 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Additional remarks"></textarea>
+      </div>
+
+      <div class="flex flex-col">
+        <label for="status" class="text-blue-700 text-sm font-semibold mb-2">Status <span class="text-red-600">*</span></label>
+        <select id="status" name="status" class="border border-blue-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+          <option>Open</option>
+          <option>In Progress</option>
+          <option>Closed</option>
+        </select>
+      </div>
+
+      <div class="flex flex-col">
+        <label for="openDate" class="text-blue-700 text-sm font-semibold mb-2">Open Date <span class="text-red-600">*</span></label>
+        <input id="openDate" name="openDate" type="date" class="border border-blue-300 rounded-lg px-4 py-3 text-sm placeholder-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500" value="2025-05-27" required />
+      </div>
+
+      <div class="flex flex-col">
+        <label for="closedDate" class="text-blue-700 text-sm font-semibold mb-2">Closed Date</label>
+        <input id="closedDate" name="closedDate" type="date" class="border border-blue-300 rounded-lg px-4 py-3 text-sm placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="dd / mm / yyyy" />
+      </div>
+
+      <div class="flex flex-col">
+        <label for="taskGivenBy" class="text-blue-700 text-sm font-semibold mb-2">Task Given By</label>
+        <input id="taskGivenBy" name="taskGivenBy" type="text" class="border border-blue-300 rounded-lg px-4 py-3 text-sm placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="" />
+      </div>
+
+      <div class="flex flex-col">
+        <label for="responsibility" class="text-blue-700 text-sm font-semibold mb-2">Responsibility</label>
+        <input id="responsibility" name="responsibility" type="text" class="border border-blue-300 rounded-lg px-4 py-3 text-sm placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="" />
+      </div>
+
+      <div class="flex flex-col">
+        <label for="priority" class="text-blue-700 text-sm font-semibold mb-2">Priority <span class="text-red-600">*</span></label>
+        <select id="priority" name="priority" class="border border-blue-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+          <option>Medium</option>
+          <option>Low</option>
+          <option>High</option>
+        </select>
+      </div>
+
+      <div class="col-span-full mt-4">
+        <button id="submitBtn" type="submit" class="bg-blue-700 text-white font-bold px-8 py-3 rounded-lg hover:bg-blue-800 transition w-full sm:w-auto">Add Task</button>
+      </div>
+    </form>
+
+    <section class="mt-12 overflow-x-auto rounded-lg shadow-lg border border-blue-200" aria-label="Tasks Table">
+      <table id="tasksTable" class="min-w-full text-left text-sm text-blue-900">
+        <thead class="bg-blue-200">
+          <tr>
+            <th class="px-5 py-4 whitespace-nowrap font-semibold">Sl No.</th>
+            <th class="px-5 py-4 whitespace-nowrap font-semibold">Task Name</th>
+            <th class="px-5 py-4 whitespace-nowrap font-semibold">Remarks</th>
+            <th class="px-5 py-4 whitespace-nowrap font-semibold">Status</th>
+            <th class="px-5 py-4 whitespace-nowrap font-semibold">Open Date</th>
+            <th class="px-5 py-4 whitespace-nowrap font-semibold">Closed Date</th>
+            <th class="px-5 py-4 whitespace-nowrap font-semibold">Task Given By</th>
+            <th class="px-5 py-4 whitespace-nowrap font-semibold">Responsibility</th>
+            <th class="px-5 py-4 whitespace-nowrap font-semibold">Priority</th>
+            <th class="px-5 py-4 whitespace-nowrap font-semibold">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-blue-200"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getDatabase, ref, push, set, onValue, remove, get, child } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAXRMiDbYxAgUeMJr-sEnObWxoeojNTxYQ",
+      authDomain: "open-task-system.firebaseapp.com",
+      databaseURL: "https://open-task-system-default-rtdb.firebaseio.com",
+      projectId: "open-task-system",
+      storageBucket: "open-task-system.appspot.com",
+      messagingSenderId: "430645439647",
+      appId: "1:430645439647:web:2e79dda55c9e4c48c906aa",
+      measurementId: "G-56PH50CK9T"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const form = document.getElementById('taskForm');
+    const tableBody = document.querySelector('#tasksTable tbody');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const dateObj = new Date(dateStr);
+      if (isNaN(dateObj)) return '';
+      const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      return dateObj.toLocaleDateString('en-US', options);
+    }
+
+    function statusBadge(status) {
+      switch (status.toLowerCase()) {
+        case 'closed':
+          return `<span class="inline-block px-3 py-1 rounded-full bg-green-200 text-green-800 font-semibold">${status}</span>`;
+        case 'open':
+          return `<span class="inline-block px-3 py-1 rounded-full bg-yellow-200 text-yellow-800 font-semibold">${status}</span>`;
+        case 'in progress':
+          return `<span class="inline-block px-3 py-1 rounded-full bg-blue-200 text-blue-800 font-semibold">${status}</span>`;
+        default:
+          return `<span class="inline-block px-3 py-1 rounded-full bg-gray-200 text-gray-800 font-semibold">${status}</span>`;
+      }
+    }
+
+    function priorityBadge(priority) {
+      switch (priority.toLowerCase()) {
+        case 'high':
+          return `<span class="inline-block px-3 py-1 rounded-full bg-red-200 text-red-800 font-semibold">${priority}</span>`;
+        case 'medium':
+          return `<span class="inline-block px-3 py-1 rounded-full bg-orange-200 text-orange-800 font-semibold">${priority}</span>`;
+        case 'low':
+          return `<span class="inline-block px-3 py-1 rounded-full bg-green-200 text-green-800 font-semibold">${priority}</span>`;
+        default:
+          return `<span class="inline-block px-3 py-1 rounded-full bg-gray-200 text-gray-800 font-semibold">${priority}</span>`;
+      }
+    }
+
+    function renderTasks(tasks) {
+      tableBody.innerHTML = '';
+      tasks.forEach(({ key, ...task }, index) => {
+        const tr = document.createElement('tr');
+        tr.className = 'bg-white';
+        tr.innerHTML = `
+          <td class="px-5 py-4 whitespace-nowrap">${index + 1}</td>
+          <td class="px-5 py-4 whitespace-nowrap">${task.taskName}</td>
+          <td class="px-5 py-4 whitespace-nowrap">${task.remarks}</td>
+          <td class="px-5 py-4 whitespace-nowrap">${statusBadge(task.status)}</td>
+          <td class="px-5 py-4 whitespace-nowrap"><time datetime="${task.openDate}">${formatDate(task.openDate)}</time></td>
+          <td class="px-5 py-4 whitespace-nowrap">${formatDate(task.closedDate)}</td>
+          <td class="px-5 py-4 whitespace-nowrap">${task.taskGivenBy}</td>
+          <td class="px-5 py-4 whitespace-nowrap">${task.responsibility}</td>
+          <td class="px-5 py-4 whitespace-nowrap">${priorityBadge(task.priority)}</td>
+          <td class="px-5 py-4 whitespace-nowrap space-x-3">
+            <button type="button" class="text-blue-600 font-semibold border border-blue-600 rounded-full px-6 py-1 hover:bg-blue-50 transition" data-key="${key}">Edit</button>
+            <button type="button" class="text-red-600 font-semibold border border-red-400 rounded-full px-6 py-1 hover:bg-red-50 transition" data-key="${key}">Delete</button>
+          </td>
+        `;
+        tableBody.appendChild(tr);
+      });
+
+      // Attach event listeners after rendering
+      tableBody.querySelectorAll('button').forEach(button => {
+        if (button.textContent === 'Edit') {
+          button.onclick = () => editTask(button.dataset.key);
+        } else if (button.textContent === 'Delete') {
+          button.onclick = () => deleteTask(button.dataset.key);
+        }
+      });
+    }
+
+    function listenForTasks() {
+      const tasksRef = ref(db, 'tasks');
+      onValue(tasksRef, (snapshot) => {
+        const data = snapshot.val();
+        const tasks = [];
+        for (const key in data) {
+          if (data.hasOwnProperty(key)) {
+            tasks.push({ key, ...data[key] });
+          }
+        }
+        renderTasks(tasks);
+      });
+    }
+
+    async function saveTask(task, key = null) {
+      if (key) {
+        await set(ref(db, 'tasks/' + key), task);
+      } else {
+        const newTaskRef = push(ref(db, 'tasks'));
+        await set(newTaskRef, task);
+      }
+    }
+
+    async function deleteTask(key) {
+      if (confirm('Are you sure you want to delete this task?')) {
+        await remove(ref(db, 'tasks/' + key));
+      }
+    }
+
+    async function editTask(key) {
+      const snapshot = await get(child(ref(db), `tasks/${key}`));
+      if (snapshot.exists()) {
+        const task = snapshot.val();
+        form.taskName.value = task.taskName;
+        form.remarks.value = task.remarks;
+        form.status.value = task.status;
+        form.openDate.value = task.openDate;
+        form.closedDate.value = task.closedDate || '';
+        form.taskGivenBy.value = task.taskGivenBy;
+        form.responsibility.value = task.responsibility;
+        form.priority.value = task.priority;
+        form.dataset.editKey = key;
+        submitBtn.textContent = 'Save Task';
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const taskName = form.taskName.value.trim();
+      const status = form.status.value;
+      const openDate = form.openDate.value;
+      const priority = form.priority.value;
+
+      if (!taskName || !status || !openDate || !priority) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+
+      const remarks = form.remarks.value.trim();
+      const closedDate = form.closedDate.value;
+      const taskGivenBy = form.taskGivenBy.value.trim();
+      const responsibility = form.responsibility.value.trim();
+
+      const task = {
+        taskName,
+        remarks,
+        status,
+        openDate,
+        closedDate,
+        taskGivenBy,
+        responsibility,
+        priority
+      };
+
+      const editKey = form.dataset.editKey;
+
+      try {
+        if (editKey) {
+          await saveTask(task, editKey);
+          delete form.dataset.editKey;
+          submitBtn.textContent = 'Add Task';
+        } else {
+          await saveTask(task);
+        }
+        form.reset();
+        form.openDate.value = '2025-05-27';
+        form.priority.value = 'Medium';
+        form.status.value = 'Open';
+      } catch (error) {
+        alert('Error saving task: ' + error.message);
+      }
+    });
+
+    listenForTasks();
+  </script>
+</body>
+</html>
